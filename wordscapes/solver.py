@@ -1,26 +1,13 @@
-import argparse
 import itertools
 import re
 
-def parse_args(args):
-	parser = argparse.ArgumentParser()
+def find_words(letters, mask=None, length=None):
+	words = match_letters(letters, length)
 
-	parser.add_argument('--length', '-l', type=int)
-	parser.add_argument('--match', '-m')
-	parser.add_argument('letters')
+	if mask is not None:
+		words = filter_regex(words, mask)
 
-	return parser.parse_args(args)
-
-def main(args=None):
-	args = parse_args(args)
-
-	words = match_letters(args.letters, args.length)
-
-	if args.match is not None:
-		words = filter_regex(words, args.match)
-
-	for w in sorted(sorted(words), key=len):
-		print(w)
+	return words
 
 def match_letters(letters, length=None):
 	if not letters:
@@ -53,6 +40,3 @@ def match_letters(letters, length=None):
 def filter_regex(words, pattern):
 	pattern = re.compile(f'^{pattern}$')
 	return [w for w in words if pattern.match(w)]
-
-if __name__ == '__main__':
-	main()
