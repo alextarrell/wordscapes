@@ -1,3 +1,5 @@
+from importlib import resources
+from . import data
 import itertools
 import re
 
@@ -22,7 +24,7 @@ def match_letters(letters, length=None):
 	pattern = re.compile(f'^[{letters}]*$')
 
 	potentials = set()
-	with open("word_list.txt") as f:
+	with resources.open_text(data, 'word_list.txt') as f:
 		for word in f:
 			match = pattern.match(word)
 			if match:
